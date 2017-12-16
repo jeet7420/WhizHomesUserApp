@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>WebSocket Client</title>
+	<input type="text" id="homeId" />
+	<input type="submit" value="Broadcast message" onclick="send()" />
+	<script type="text/javascript">
+      var wsocket;
+      function connect() {
+ wsocket = new WebSocket("ws:///192.168.0.27:8899/SmHome/userSession");
+          wsocket.onmessage = onMessage;
+          wsocket.onopen=send;
+      }
+      function onMessage(evt) {
+      Android.showToast(evt.data);
+         document.getElementById("rate").innerHTML=evt.data;
+      }
+
+	 function open() {
+     send();
+      }
+
+    function send() {
+      var txt = Android.getString();
+      wsocket.send(txt);
+      return false;
+    }
+ window.addEventListener("load", connect, false);
+  </script>
+</head>
+<body>
+<table>
+	<tr>
+		<td> <label id="rateLbl">Current Rate:</label></td>
+		<td> <label id="rate">0</label></td>
+	</tr>
+</table>
+</body>
+</html>
